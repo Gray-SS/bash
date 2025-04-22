@@ -1,4 +1,5 @@
 #include "parser.h"
+#include "shell.h"
 
 command_t *parse_command(const char *input) {
     if (!input || input[0] == '\0') {
