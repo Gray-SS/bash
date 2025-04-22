@@ -1,6 +1,6 @@
+<img src="./assets/banner.png" alt="Logo" style="margin-bottom: 30px"/>
 
 # 🐚 Minish — A Minimal Custom Unix Shell
-<img src="./assets/banner.png" alt="Logo"/>
 
 Minish is a lightweight, custom-built Unix shell written in C. It supports essential shell functionalities including command parsing, execution, basic job control, prompt customization, and input editing with persistent command history via `readline`.
 Minish is a lightweight, custom-built Unix shell written in C. It supports essential shell functionalities including command parsing, execution, basic job control, prompt customization, and input editing with persistent command history via `readline`.
