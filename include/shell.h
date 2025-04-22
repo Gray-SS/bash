@@ -19,6 +19,16 @@
 #define MAX_HOSTNAME_LENGTH 256
 #define DELIMITERS " \t\r\n\a"
 
+// Codes de couleur ANSI
+#define COLOR_RESET     "\033[0m"
+#define COLOR_BOLD      "\033[1m"
+#define COLOR_USER      "\033[38;5;39m"    // Bleu clair
+#define COLOR_HOST      "\033[38;5;208m"   // Orange
+#define COLOR_DIR       "\033[38;5;76m"    // Vert
+#define COLOR_SUCCESS   "\033[38;5;46m"    // Vert vif
+#define COLOR_ERROR     "\033[38;5;196m"   // Rouge vif
+#define COLOR_PROMPT    "\033[38;5;226m"   // Jaune
+
 typedef struct {
     char   *username;
     char   *hostname;
@@ -26,6 +36,8 @@ typedef struct {
 
     int     exit_code;
     int     is_running;
+    int     is_root;
+    int     last_command_status;
 
 } shell_state_t;
 
