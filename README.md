@@ -62,6 +62,3 @@ make
 - [ ] Environment variable expansion
 - [ ] Aliases
 - [ ] Parsing of quoted strings, escapes and more
-
-- [ ] Aliases
-- [ ] Parsing of quoted strings, escapes and more
