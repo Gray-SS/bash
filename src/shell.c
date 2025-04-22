@@ -49,7 +49,11 @@ void execute_interactive_mode(shell_state_t *state) {
 
         command_t *cmd = parse_command(input);
         if (cmd) {
-            
+            printf("Executing '%s'\nArgs:\n", cmd->args[0]);
+            for (int i = 1; i < cmd->arg_count; i++) {
+                printf("\t- %s\n", cmd->args[i]);
+            }
+            free_command(cmd);
         }
     }
 }
