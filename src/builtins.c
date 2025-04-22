@@ -5,6 +5,7 @@ static const builtin_cmd_t builtin_commands[] = {
     {"cd", builtin_cd},
     {"exit", builtin_exit},
     {"pwd", builtin_pwd},
+    {"echo", builtin_echo},
     {NULL, NULL}
 };
 
@@ -33,6 +34,20 @@ int execute_builtin_command(command_t *cmd) {
     }
 
     return -1;
+}
+
+int builtin_echo(command_t *cmd) {
+    if (cmd->arg_count == 1) {
+        fprintf(stderr, "Too few argument for the echo command.\n");
+        return 1;
+    }
+
+    for (int i = 1; i < cmd->arg_count; i++) {
+        printf("%s ", cmd->args[i]);
+    }
+
+    printf("\n");
+    return 0;
 }
 
 int builtin_exit(command_t *cmd) {

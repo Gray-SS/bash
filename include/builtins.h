@@ -16,5 +16,6 @@ int builtin_exit(command_t *cmd);
 int builtin_pwd(command_t *cmd);
 int builtin_cd(command_t *cmd);
 int builtin_pwd(command_t *cmd);
+int builtin_echo(command_t *cmd);
 
 #endif //BUILTINS_H
