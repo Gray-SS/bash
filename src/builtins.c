@@ -2,11 +2,12 @@
 #include "builtins.h"
 
 static const builtin_cmd_t builtin_commands[] = {
-    {"cd", builtin_cd},
-    {"exit", builtin_exit},
-    {"pwd", builtin_pwd},
-    {"echo", builtin_echo},
-    {NULL, NULL}
+    {"cd", "Change directory. Usage: cd [directory|~|-]", builtin_cd},
+    {"exit", "Exit the shell. Usage: exit", builtin_exit},
+    {"pwd", "Print current working directory. Usage: pwd", builtin_pwd },
+    {"echo", "Display a line of text. Usage: echo [text...]", builtin_echo},
+    {"help", "Display information about built-in commands. Usage: help [command...]", builtin_help},
+    {NULL, NULL, NULL}
 };
 
 
@@ -114,6 +115,39 @@ int builtin_cd(command_t *cmd) {
     if (getcwd(new_dir, MAX_PATH_LENGTH) != NULL) {
         setenv("PWD", new_dir, 1);
         strcpy(global_state->crnt_dir, new_dir);
+    }
+
+    return 0;
+}
+
+int builtin_help(command_t *cmd) {
+    if (cmd->arg_count > 2) {
+        fprintf(stderr, "minishell: help: Too many arguments.\n");
+        return 1;
+    }
+
+    if (cmd->arg_count == 1) {
+        printf("Minishell built-in commands:\n");
+        for (int i = 0; builtin_commands[i].name != NULL; i++) {
+            printf("  %s - %s\n", builtin_commands[i].name, builtin_commands[i].help);
+        }
+    } else {
+        // Display help for a specific command
+        const char *cmd_name = cmd->args[1];
+        int found = 0;
+
+        for (int i = 0; builtin_commands[i].name != NULL; i++) {
+            if (strcmp(builtin_commands[i].name, cmd_name) == 0) {
+                printf("%s\n", builtin_commands[i].help);
+                found = 1;
+                break;
+            }
+        }
+
+        if (!found) {
+            fprintf(stderr, "minishell: help: no help found for '%s'\n", cmd_name);
+            return 1;
+        }
     }
 
     return 0;
