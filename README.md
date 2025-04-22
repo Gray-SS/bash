@@ -3,6 +3,7 @@
 <img src="./assets/banner.png" alt="Logo"/>
 
 Minish is a lightweight, custom-built Unix shell written in C. It supports essential shell functionalities including command parsing, execution, basic job control, prompt customization, and input editing with persistent command history via `readline`.
+Minish is a lightweight, custom-built Unix shell written in C. It supports essential shell functionalities including command parsing, execution, basic job control, prompt customization, and input editing with persistent command history via `readline`.
 
 ---
 
@@ -12,6 +13,7 @@ Minish is a lightweight, custom-built Unix shell written in C. It supports essen
   Displays username, hostname, current working directory, and command status (✓ / ✗).
 
 - 🔁 **Command Parsing**
+  Handles arguments.
   Handles arguments.
 
 - 📜 **Command History**
@@ -58,5 +60,8 @@ make
 - [ ] Background process support (&)
 - [ ] Auto-completion with tab
 - [ ] Environment variable expansion
+- [ ] Aliases
+- [ ] Parsing of quoted strings, escapes and more
+
 - [ ] Aliases
 - [ ] Parsing of quoted strings, escapes and more
