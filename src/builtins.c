@@ -37,12 +37,7 @@ int execute_builtin_command(command_t *cmd) {
 }
 
 int builtin_echo(command_t *cmd) {
-    if (cmd->arg_count == 1) {
-        fprintf(stderr, "Too few argument for the echo command.\n");
-        return 1;
-    }
-
-    for (int i = 1; i < cmd->arg_count; i++) {
+    for (int i = 0; i < cmd->arg_count; i++) {
         printf("%s ", cmd->args[i]);
     }
 
@@ -52,7 +47,7 @@ int builtin_echo(command_t *cmd) {
 
 int builtin_exit(command_t *cmd) {
     if (cmd->arg_count > 1) {
-        fprintf(stderr, "The exit command doesn't accept arguments.\n");
+        fprintf(stderr, "minishell: exit: Too much arguments.\n");
         return 1;
     }
 
@@ -62,7 +57,7 @@ int builtin_exit(command_t *cmd) {
 
 int builtin_pwd(command_t *cmd) {
     if (cmd->arg_count > 1) {
-        fprintf(stderr, "Too much argument for the pwd command.\n");
+        fprintf(stderr, "minishell: pwd: Too much argument.\n");
         return 1;
     }
 
@@ -80,20 +75,20 @@ int builtin_cd(command_t *cmd) {
     char *dir;
 
     if (cmd->arg_count > 2) {
-        fprintf(stderr, "%s\n", "Too much argument for the cd command.\n");
+        fprintf(stderr, "%s\n", "minishell: cd: Too much arguments.\n");
         return 1;
     }
 
     if (cmd->arg_count == 1 || strcmp(cmd->args[1], "~") == 0) {
         dir = getenv("HOME");
         if (dir == NULL) {
-            fprintf(stderr, "HOME environment variable not defined.\n");
+            fprintf(stderr, "minishell: cd: HOME environment variable not defined.\n");
             return 1;
         }
     } else if (strcmp(cmd->args[1], "-") == 0) {
         dir = getenv("OLDPWD");
         if (dir == NULL) {
-            fprintf(stderr, "OLDPWD environment variable not defined.\n");
+            fprintf(stderr, "minishell: cd: OLDPWD environment variable not defined.\n");
             return 1;
         }
 
@@ -109,7 +104,7 @@ int builtin_cd(command_t *cmd) {
     }
 
     if (chdir(dir) != 0) {
-        fprintf(stderr, "Unable to navigate to dir %s: %s\n", dir, strerror(errno));
+        fprintf(stderr, "minishell: cd: Unable to navigate to %s: %s\n", dir, strerror(errno));
         return 1;
     }
 
