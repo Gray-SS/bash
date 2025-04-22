@@ -24,6 +24,12 @@ void shell_init(shell_state_t *state) {
         strcpy(state->crnt_dir, ".");
     }
 
+    if (state->username && strcmp(state->username, "root") == 0) {
+        state->is_root = 1;
+    }
+
+    load_history();
+
     global_state = state;
     signal(SIGTERM, signal_handler);
     signal(SIGINT, signal_handler);
@@ -55,31 +61,77 @@ void display_prompt(shell_state_t *state) {
     fflush(stdout);
 }
 
+char* generate_prompt(shell_state_t *state) {
+    static char prompt[2048];
+    char *home_dir = getenv("HOME");
+    char formatted_dir[MAX_PATH_LENGTH];
+    strcpy(formatted_dir, state->crnt_dir);
 
-void execute_interactive_mode(shell_state_t *state) {
+    if (home_dir && strncmp(formatted_dir, home_dir, strlen(home_dir)) == 0) {
+        char temp[MAX_PATH_LENGTH];
+        snprintf(temp, sizeof(temp), "~%s", formatted_dir + strlen(home_dir));
+        strcpy(formatted_dir, temp);
+    }
+
+    char status_symbol[32] = "";
+    if (state->last_command_status == 0) {
+        snprintf(status_symbol, sizeof(status_symbol), "%s✓%s ", COLOR_SUCCESS, COLOR_RESET);
+    } else if (state->last_command_status > 0) {
+        snprintf(status_symbol, sizeof(status_symbol), "%s✗%s ", COLOR_ERROR, COLOR_RESET);
+    }
+
+    snprintf(prompt, sizeof(prompt),
+        "%s %s%s%s@%s%s%s:%s%s%s %s%s%s ",
+        status_symbol,
+        COLOR_BOLD, COLOR_USER, state->username,
+        COLOR_HOST, state->hostname, COLOR_RESET,
+        COLOR_DIR, formatted_dir, COLOR_RESET,
+        COLOR_PROMPT, state->is_root ? "#" : "$", COLOR_RESET
+    );
+
+    return prompt;
+}
+
+int execute_interactive_mode(shell_state_t *state) {
     char input[MAX_INPUT_SIZE];
 
     while (state->is_running) {
-        display_prompt(state);
-
-        if (!fgets(input, MAX_INPUT_SIZE, stdin)) {
-            if (feof(stdin)) {
-                printf("\n");
-                break;
-            }
-            continue;
+        char *line = readline(generate_prompt(state));
+        if (!line || !*line) {
+            printf("\n");
+            break;
         }
+
+        if (*line) add_history(line);
 
         input[strcspn(input, "\n")] = '\0';
 
-        command_t *cmd = parse_command(input);
-        if (!cmd) continue;
+        command_t *cmd = parse_command(line);
+        if (cmd) {
+            state->last_command_status = execute_command(cmd);
+            printf("\n");
+            free_command(cmd);
+        }
 
-        state->last_command_status = execute_command(cmd);
-        printf("\n");
-
-        free_command(cmd);
+        free(line);
     }
+
+    save_history();
+    shell_cleanup(state);
+
+    return state->exit_code;
+}
+
+void save_history() {
+    char path[MAX_PATH_LENGTH];
+    snprintf(path, sizeof(path), "%s/.myshell_history", getenv("HOME"));
+    write_history(path);
+}
+
+void load_history() {
+    char path[MAX_PATH_LENGTH];
+    snprintf(path, sizeof(path), "%s/.myshell_history", getenv("HOME"));
+    read_history(path);
 }
 
 void shell_cleanup(shell_state_t *state) {

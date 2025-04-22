@@ -10,8 +10,13 @@
 #include <errno.h>
 #include <fcntl.h>
 
+#include <readline/readline.h>
+#include <readline/history.h>
+
 #include "parser.h"
 #include "execution.h"
+
+#define HISTORY_PATH ".shell_history"
 
 #define MAX_ARGS 256
 #define MAX_INPUT_SIZE 4096
@@ -44,8 +49,13 @@ typedef struct {
 extern shell_state_t *global_state;
 
 void shell_init(shell_state_t *state);
-void execute_interactive_mode(shell_state_t *state);
-void signal_handler(int signo);
 void shell_cleanup(shell_state_t *state);
+
+int execute_interactive_mode(shell_state_t *state);
+
+void save_history();
+void load_history();
+
+void signal_handler(int signo);
 
 #endif //SHELL_H

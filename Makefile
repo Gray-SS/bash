@@ -1,7 +1,7 @@
 # Compilateur et options
 CC = gcc
 CFLAGS = -Wall -Wextra -g -I./include
-LDFLAGS =
+LDFLAGS = -lreadline
 
 # Dossiers du projet
 SRC_DIR = src
