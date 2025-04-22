@@ -17,7 +17,7 @@ SRCS = $(wildcard $(SRC_DIR)/*.c)
 OBJS = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))
 
 # Nom de l'exécutable
-TARGET = $(BIN_DIR)/shell
+TARGET = $(BIN_DIR)/minish
 
 # Règle par défaut
 all: $(TARGET)
