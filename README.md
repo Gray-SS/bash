@@ -56,3 +56,4 @@ make
 - [ ] Background process support (&)
 - [ ] Auto-completion with tab
 - [ ] Environment variable expansion
+- [ ] Parsing of quoted strings, escapes and more
