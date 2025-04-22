@@ -6,12 +6,9 @@
 #include <stdio.h>
 #include <string.h>
 
-#define MAX_ARGS 256
-#define DELIMITERS " \t\r\n\a"
-
 typedef struct {
-    char  **args;
-    int     arg_count;
+    char            **args;
+    int             arg_count;
 
 } command_t;
 
