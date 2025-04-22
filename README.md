@@ -1,6 +1,8 @@
-# 🐚 MyShell — A Minimal Custom Unix Shell
 
-MyShell is a lightweight, custom-built Unix shell written in C. It supports essential shell functionalities including command parsing, execution, basic job control, prompt customization, and input editing with persistent command history via `readline`.
+# 🐚 Minish — A Minimal Custom Unix Shell
+<img src="./assets/banner.png" alt="Logo"/>
+
+Minish is a lightweight, custom-built Unix shell written in C. It supports essential shell functionalities including command parsing, execution, basic job control, prompt customization, and input editing with persistent command history via `readline`.
 
 ---
 
@@ -10,7 +12,7 @@ MyShell is a lightweight, custom-built Unix shell written in C. It supports esse
   Displays username, hostname, current working directory, and command status (✓ / ✗).
 
 - 🔁 **Command Parsing**
-  Handles arguments, quoted strings, and escapes.
+  Handles arguments.
 
 - 📜 **Command History**
   Uses GNU `readline` to support:
@@ -56,3 +58,5 @@ make
 - [ ] Background process support (&)
 - [ ] Auto-completion with tab
 - [ ] Environment variable expansion
+- [ ] Aliases
+- [ ] Parsing of quoted strings, escapes and more
