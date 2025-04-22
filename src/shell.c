@@ -1,6 +1,6 @@
 #include "shell.h"
 
-static shell_state_t *global_state = NULL;
+shell_state_t *global_state = NULL;
 
 void shell_init(shell_state_t *state) {
     state->exit_code = 0;
@@ -28,7 +28,7 @@ void shell_init(shell_state_t *state) {
 }
 
 void display_prompt(shell_state_t *state) {
-    printf("%s>%s>%s > ", state->username, state->hostname, state->crnt_dir);
+    printf("%s>%s> ", state->username, state->hostname);
 }
 
 void execute_interactive_mode(shell_state_t *state) {
@@ -48,13 +48,12 @@ void execute_interactive_mode(shell_state_t *state) {
         input[strcspn(input, "\n")] = '\0';
 
         command_t *cmd = parse_command(input);
-        if (cmd) {
-            printf("Executing '%s'\nArgs:\n", cmd->args[0]);
-            for (int i = 1; i < cmd->arg_count; i++) {
-                printf("\t- %s\n", cmd->args[i]);
-            }
-            free_command(cmd);
-        }
+        if (!cmd) continue;
+
+        execute_command(cmd);
+
+        printf("\n");
+        free_command(cmd);
     }
 }
 
